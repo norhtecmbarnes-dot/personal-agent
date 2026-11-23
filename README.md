@@ -8,7 +8,7 @@ Personal Agent makes it dramatically easier to run browser-based software — in
 
 Plain-language provenance:
 
-- **Built with** [Hermes](https://hermes-agent.nousresearch.com) (an open-source agent harness) running **inkling-2-small**, a cloud model at roughly **$1.00 per million output tokens**. Every part of this repository was produced with that stack, with a human approving each step.
+- **Built with** [Hermes](https://hermes-agent.nousresearch.com) (an open-source agent harness) running **inkling-2-small**, a cloud model at roughly **$1.00 per million output tokens**. The initial export was prepared with that stack; subsequent packaging and verification changes are recorded in Git history.
 - **Powered by Ollama.** Any Ollama model can be used — pick one from `ollama list`, or pull one you like. A cheaper cloud option is **GLM-5.3 Flash** at about **$0.50 per million output tokens** (Ollama pricing as of November 2026 — check [ollama.com/pricing](https://ollama.com/pricing) before budgeting). If you have a GPU, you can likely run capable open models locally and pay nothing per token.
 - **Easiest install:** point an agent at this repository and tell it to install and set it up — **Hermes, Grok Bot, or Meta Muse** can all do this, and can stay on afterwards as your assistant for making changes to the program itself.
 - **The agent knows the open-source ArtCraft tool series** ([getartcraft.com](https://getartcraft.com) — FilmCraft, PhotoCraft, VectorCraft, SoundCraft and friends) and can drive those tools to produce work. We used **FilmCraft together with VideoExpress** to assemble the final edit of the example Rainbow Garden video (see Releases for the finished film; the song ships in `media/rainbow-garden/`).
@@ -116,7 +116,7 @@ Open the local preview URL printed by Vite and stop it with `Ctrl+C` when finish
 
 ### Data and secrets for installers
 
-`.localpilot/` is created locally and ignored by Git; workflows, browser profile, and credential-vault file are not included in a clone. Credential saving is optional and locked unless the user configures `LOCALPILOT_VAULT_PASSWORD` in the environment **before starting** Personal Agent (the `LOCALPILOT_` prefix and the `.localpilot/` data directory are historical names kept for compatibility with existing installs). Do not set a shared/default password, put the password in source control, or request secrets from the user. This build has no cloud inference connector. Telegram credentials enable a send-only notifier (see below).
+`.localpilot/` is created locally and ignored by Git; workflows, browser profile, and credential-vault file are not included in a clone. Credential saving is optional and locked unless the user configures `LOCALPILOT_VAULT_PASSWORD` in the environment **before starting** Personal Agent (the `LOCALPILOT_` prefix and the `.localpilot/` data directory are historical names kept for compatibility with existing installs). Do not set a shared/default password, put the password in source control, or request secrets from the user. Local inference is the default. This version also includes explicitly configured optional provider connectors and cloud-model consent controls; they are not required for local use and are not a fallback. Telegram credentials enable a send-only notifier (see below).
 
 ## Quick run (after prerequisites)
 
@@ -128,9 +128,9 @@ npm run dev
 
 Open the local URL printed by Vite, choose **Local models**, click **Check connection**, select an installed non-cloud model, and send a test prompt. Browser workflows additionally require the isolated Chromium setup above. A production preview works with `npm run build && npm run preview`. The public gallery hosts only the interface; its server cannot reach Ollama or a browser worker on the visitor's computer.
 
-## Local-only model policy (cloud-tag guard)
+## Model selection
 
-Ollama `:cloud` model tags run remote inference even though the request passes through your local Ollama endpoint. This app treats them as cloud: `/__local-model/models` separates them from local models, and both chat and workflow handlers reject any selected model whose name contains `cloud`. There is intentionally no cloud fallback anywhere: if Ollama is unavailable, every feature reports an error instead of rerouting prompts.
+Use an installed non-cloud Ollama model for local inference. This updated version also exposes optional cloud-tagged models and explicitly configured provider endpoints; those are remote inference, not local models. Review the UI consent and configuration before using them. Local failures must not silently trigger a provider change.
 
 ## Run a browser workflow (local only)
 
@@ -148,7 +148,7 @@ The worker refuses, by policy independent of the model, controls that submit for
 
 Development/preview-only middleware under `/__local-model/*`, served only to loopback hosts:
 
-- `GET /health`, `GET /models` (local and cloud-tagged models separated), `POST /chat`, `GET /soul` — local inference through Ollama; conversation history lives only in browser memory; `:cloud` model names rejected.
+- `GET /health`, `GET /models`, `POST /chat`, `GET /soul` — model discovery and chat; local Ollama is the default, with optional explicit provider configuration.
 - `GET/POST /workflows` — saved-workflow CRUD in `.localpilot/workflows.json` with validation: bundled Markdown path, hostname-only allowlist, http(s) target URL matching the allowlist, state machine (`draft/active/running/paused/completed/blocked/cancelled`), and the approved-brief gate for the Producer workload. Atomic temp-file writes.
 - `GET /browser-health`, `POST /browser-start` — status of, and local spawn for, `browser-worker.cjs` on `127.0.0.1:4201`.
 - `POST /browser` — proxy to the worker's action API.
@@ -170,7 +170,7 @@ All state is device-local and gitignored under `.localpilot/`: `workflows.json` 
 
 ## Safety boundaries
 
-- No cloud model fallback, shell tool, or arbitrary code execution.
+- No silent model-provider fallback; browser workflows do not expose a shell tool or arbitrary code execution.
 - The browser worker is the only automation path, and it is domain-scoped, evidence-capturing, and approval-gated; it never uses your personal browser profile.
 - No access to passwords/cookies/OTP/payment fields; credential-free http(s) targets only.
 - No automatic publishing, purchasing, or metered generation: the worker blocks the controls outright, and remaining writes still need per-action approval.
@@ -178,7 +178,7 @@ All state is device-local and gitignored under `.localpilot/`: `workflows.json` 
 
 ## Production readiness
 
-This repository is a functional local demo, not a production browser agent. Missing before production: durable/resumable job state beyond the saved-run record, multi-user concerns, a threat-model review, and tests. The public gallery deployment cannot control visitors' local computers. Do not ask users to enter browser passwords, cookies, or API keys.
+This repository is a functional local demo, not a production browser agent. Missing before production: durable/resumable job state beyond the saved-run record, multi-user concerns, a threat-model review, and broader integration/security tests. The public gallery deployment cannot control visitors' local computers. Do not ask users to enter browser passwords, cookies, or API keys.
 
 ## Planned implementation order
 
@@ -186,7 +186,7 @@ This repository is a functional local demo, not a production browser agent. Miss
 2. Read-only, evidence-capturing workflow and cancellation — implemented in the Workflows tab loop (pause/abort supported)
 3. Approval broker for explicitly bounded side effects — per-action approve/reject implemented; durable queues/audit not yet
 4. Durable jobs and narrowly scoped MCP/local-app integrations — not started
-5. Threat-model review and tests — not started
+5. Automated worker, runner, transport, and release-packaging tests exist; comprehensive threat-model review remains outstanding
 
 ## Reference
 

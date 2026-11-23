@@ -1,14 +1,14 @@
 {
   "name": "personal-agent",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node --test browser-worker.test.cjs agentic-browser.test.cjs local-model-chat.test.cjs"
+    "test": "node --test browser-worker.test.cjs agentic-browser.test.cjs local-model-chat.test.cjs release-packaging.test.cjs"
   },
   "dependencies": {
     "playwright": "^1.65.1",
