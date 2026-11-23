@@ -1,0 +1,13 @@
+node_modules
+.git
+.localpilot
+.browser-profile
+artifacts
+dist
+*.log
+*.tmp
+patch-*.cjs
+replace-*.cjs
+integrate-*.cjs
+cleanup-*.cjs
+fix-*.cjs

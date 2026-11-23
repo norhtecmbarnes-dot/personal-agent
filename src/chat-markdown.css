@@ -1,0 +1,35 @@
+.local-chat-message .chat-markdown,
+.local-chat-message .chat-plain-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.65;
+}
+.local-chat-message .chat-markdown > :first-child { margin-top: 0; }
+.local-chat-message .chat-markdown > :last-child { margin-bottom: 0; }
+.local-chat-message .chat-markdown p,
+.local-chat-message .chat-plain-text { margin: 0.65em 0; }
+.local-chat-message .chat-markdown h1,
+.local-chat-message .chat-markdown h2,
+.local-chat-message .chat-markdown h3,
+.local-chat-message .chat-markdown h4,
+.local-chat-message .chat-markdown h5,
+.local-chat-message .chat-markdown h6 { line-height: 1.3; margin: 1.05em 0 0.45em; color: inherit; }
+.local-chat-message .chat-markdown h1 { font-size: 1.45em; }
+.local-chat-message .chat-markdown h2 { font-size: 1.25em; }
+.local-chat-message .chat-markdown h3 { font-size: 1.1em; }
+.local-chat-message .chat-markdown ul,
+.local-chat-message .chat-markdown ol { margin: 0.6em 0; padding-left: 1.55em; }
+.local-chat-message .chat-markdown li + li { margin-top: 0.28em; }
+.local-chat-message .chat-markdown blockquote { margin: 0.8em 0; padding: 0.15em 0 0.15em 0.9em; border-left: 3px solid #8a9a84; color: #5d6659; }
+.local-chat-message .chat-markdown blockquote p { margin: 0.35em 0; }
+.local-chat-message .chat-markdown hr { margin: 1em 0; border: 0; border-top: 1px solid #d9ded6; }
+.local-chat-message .chat-markdown code { padding: 0.12em 0.35em; border-radius: 4px; background: rgba(90, 105, 82, 0.12); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.9em; }
+.local-chat-message .chat-markdown pre { max-width: 100%; overflow: auto; margin: 0.75em 0; padding: 0.8em 0.95em; border-radius: 8px; background: #20251f; color: #f4f6f2; white-space: pre; }
+.local-chat-message .chat-markdown pre code { padding: 0; background: transparent; color: inherit; }
+.local-chat-message .chat-markdown a { color: #356b48; text-decoration: underline; text-underline-offset: 2px; }
+.local-chat-message .chat-md-table-wrap { max-width: 100%; margin: 0.85em 0; overflow-x: auto; border: 1px solid #dfe4dc; border-radius: 8px; }
+.local-chat-message .chat-md-table-wrap table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.92em; }
+.local-chat-message .chat-md-table-wrap th,
+.local-chat-message .chat-md-table-wrap td { padding: 0.55em 0.7em; border-bottom: 1px solid #e5e9e2; text-align: left; vertical-align: top; }
+.local-chat-message .chat-md-table-wrap th { background: #f0f3ed; font-weight: 700; }
+.local-chat-message .chat-md-table-wrap tr:last-child td { border-bottom: 0; }

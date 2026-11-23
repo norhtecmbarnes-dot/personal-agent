@@ -1,0 +1,7 @@
+.cloud-model-disabled { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; font: inherit; }
+.cloud-model-disabled span, .cloud-model-disabled small, .cloud-model-disabled em { display: block; overflow-wrap: anywhere; }
+.cloud-model-disabled span { font-size: 12px; font-weight: 650; }
+.cloud-model-disabled small { margin-top: 4px; color: var(--muted, #667085); font-size: 11px; line-height: 1.4; }
+.cloud-model-disabled em { margin-top: 7px; color: #5945b5; font-size: 11px; font-style: normal; font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
+.cloud-model-disabled:focus-visible { outline: 2px solid #7867d8; outline-offset: 4px; border-radius: 4px; }
+.cloud-model-disabled:hover em { color: #392b8d; }
